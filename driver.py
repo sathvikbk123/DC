@@ -67,21 +67,21 @@ success=1
 #ALOHA PROTOCOL
 
 
-def backoff(S,t):
+def backoff(S,t,i):
     print("Back off algorithm for time t = ",t)
     S.k+=1
     if S.k<=15:
         R=randrange(0,2**(S.k),1)
         newtime=t+R*5
         print(newtime)
-        if (S.frameslotadd(newtime))==True:
+        if (S.frameslotadd(newtime,i))==True:
             channel.timeslotadd(newtime)
         else:
-            abort(S,t)
+            abort(S,t,i)
     else:
-        abort(S,t)
+        abort(S,t,i)
 
-def abort(S,t):
+def abort(S,t,i):
     S.k=0
     newtime=1000+t
     S.frameslotadd(newtime,i)
@@ -123,18 +123,23 @@ while(t<10000):
     else:
         if t in channel.common:
             temp=t+10 #Changelog -> replaced t by temp in backoff functions
-            if ifinframeslotsA(t):
+            tempA=ifinframeslotsA(t)
+            tempB = ifinframeslotsB(t)
+            tempC = ifinframeslotsC(t)
+            tempD = ifinframeslotsD(t)
+
+            if tempA!=-1:
                 #A.frameslotdel(t)
-                backoff(A,temp)
-            if ifinframeslotsB(t):
+                backoff(A,temp,tempA)
+            if tempB!=-1:
                 #B.frameslotdel(t)
-                backoff(B,temp)
-            if ifinframeslotsC(t):
+                backoff(B,temp,tempB)
+            if tempC!=-1:
                 #C.frameslotdel(t)
-                backoff(C,temp)
-            if ifinframeslotsD(t):
+                backoff(C,temp,tempC)
+            if tempD!=-1:
                 #D.frameslotdel(t)
-                backoff(D,temp)
+                backoff(D,temp,tempD)
 
         else:
             temp=t+10

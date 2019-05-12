@@ -54,10 +54,10 @@ class Station:
 
     def frameslotinit(self,framelist):
         framelist.sort()
-        for i in range(5):
-            self.frameslots[i].append(framelist[i])
+        for i in range(1,6):
+            self.frameslots[i].append(framelist[i-1])
         #self.frameslots=framelist
-        for i in range(5):
+        for i in range(1,6):
             self.frameslots[i].sort()
         self.frameslotorig=list(self.frameslots)
 
@@ -67,7 +67,7 @@ class Station:
             return False
         else:
             self.frameslots[i].append(newtime)
-            self.frameslots.sort()
+            #self.frameslots.sort()
             return True
 
     def frameslotdel(self,time):
